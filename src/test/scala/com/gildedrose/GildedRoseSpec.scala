@@ -43,72 +43,72 @@ class GildedRoseSpec extends FlatSpec with Matchers with PropertyChecks {
   }
 
   it should "update simple products with non positive quality" in {
-    forAll(genItem(sellIn = -100 to 100, quality = -100 to 0)) { item =>
+    forAll(genItem(sellIn = -60 to 60, quality = -60 to 0)) { item =>
       val u = update(item)
       expect(u, item.quality, item.sellIn - 1)
     }
   }
 
   it should "not update Sulfuras" in {
-    forAll(genItem(name = "Sulfuras, Hand of Ragnaros", sellIn = -100 to 100, quality = -100 to 100)) { item =>
+    forAll(genItem(name = "Sulfuras, Hand of Ragnaros", sellIn = -60 to 60, quality = -60 to 60)) { item =>
       val u = update(item)
       expect(u, item.quality, item.sellIn)
     }
   }
 
   it should "improve Aged Brie up to 50 quality" in {
-    forAll(genItem(name = "Aged Brie", sellIn = 1 to 100, quality = -100 to 49)) { item =>
+    forAll(genItem(name = "Aged Brie", sellIn = 1 to 60, quality = -60 to 49)) { item =>
       val u = update(item)
       expect(u, item.quality + 1, item.sellIn - 1)
     }
   }
 
   it should "improve Aged Brie up to 50 quality, faster after date" in {
-    forAll(genItem(name = "Aged Brie", sellIn = -100 to 0, quality = -100 to 49)) { item =>
+    forAll(genItem(name = "Aged Brie", sellIn = -60 to 0, quality = -60 to 49)) { item =>
       val u = update(item)
       expect(u, item.quality + 2 min 50, item.sellIn - 1)
     }
   }
 
   it should "leave Aged Brie after 50 quality" in {
-    forAll(genItem(name = "Aged Brie", sellIn = -100 to 100, quality = 50 to 100)) { item =>
+    forAll(genItem(name = "Aged Brie", sellIn = -60 to 60, quality = 50 to 60)) { item =>
       val u = update(item)
       expect(u, item.quality, item.sellIn - 1)
     }
   }
 
   it should "improve backstage passes" in {
-    forAll(genItem(name = "Backstage passes to a TAFKAL80ETC concert", sellIn = 11 to 100, quality = -100 to 49)) { item =>
+    forAll(genItem(name = "Backstage passes to a TAFKAL80ETC concert", sellIn = 11 to 60, quality = -60 to 50)) { item =>
       val u = update(item)
-      expect(u, item.quality + 1, item.sellIn - 1)
+      expect(u, item.quality + 1 min 50, item.sellIn - 1)
     }
   }
 
   it should "not improve backstage passes past 50 quality" in {
-    forAll(genItem(name = "Backstage passes to a TAFKAL80ETC concert", sellIn = 1 to 10, quality = 50 to 100)) { item =>
+    forAll(genItem(name = "Backstage passes to a TAFKAL80ETC concert", sellIn = 1 to 10, quality = 50 to 60)) { item =>
       val u = update(item)
       expect(u, item.quality, item.sellIn - 1)
     }
   }
 
   it should "destroy backstage passes past due date" in {
-    forAll(genItem(name = "Backstage passes to a TAFKAL80ETC concert", sellIn = -10 to 0, quality = -100 to 100)) { item =>
+    forAll(genItem(name = "Backstage passes to a TAFKAL80ETC concert", sellIn = -10 to 0, quality = -60 to 60)) { item =>
       val u = update(item)
       expect(u, 0, item.sellIn - 1)
     }
   }
 
   it should "improve backstage passes faster 10 days before" in {
-    forAll(genItem(name = "Backstage passes to a TAFKAL80ETC concert", sellIn = 6 to 10, quality = -100 to 48)) { item =>
+    forAll(genItem(name = "Backstage passes to a TAFKAL80ETC concert", sellIn = 6 to 10, quality = -60 to 50)) { item =>
       val u = update(item)
-      expect(u, item.quality + 2, item.sellIn - 1)
+      expect(u, item.quality + 2 min 50, item.sellIn - 1)
     }
   }
 
   it should "improve backstage passes even faster 4 days before" in {
-    forAll(genItem(name = "Backstage passes to a TAFKAL80ETC concert", sellIn = 1 to 5, quality = -100 to 47)) { item =>
+    forAll(genItem(name = "Backstage passes to a TAFKAL80ETC concert", sellIn = 1 to 5, quality = -60 to 50)) { item =>
       val u = update(item)
-      expect(u, item.quality + 3, item.sellIn - 1)
+      expect(u, item.quality + 3 min 50, item.sellIn - 1)
     }
   }
 
