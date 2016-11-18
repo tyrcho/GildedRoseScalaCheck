@@ -78,8 +78,9 @@ class GildedRoseSpec extends FlatSpec with Matchers with PropertyChecks {
   }
 
   it should "improve backstage passes" in {
-    forAll(genItem(name = "Backstage passes to a TAFKAL80ETC concert", sellIn = 11 to 60, quality = -60 to 50)) { item =>
+    forAll(genItem(name = "Backstage passes to a TAFKAL80ETC concert", sellIn = 11 to 15, quality = 45 to 50)) { item =>
       val u = update(item)
+      println(item)
       expect(u, item.quality + 1 min 50, item.sellIn - 1)
     }
   }

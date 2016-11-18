@@ -1,6 +1,3 @@
-Template for a scala project with maven.
+Scala Check (within scalatest) tests for gilded rose kata.
 
-In Eclipse : 
-
-- Import as maven project
-- Configure > add Scala nature
+Conclusion : works, but not really better than standard tests in this case.
